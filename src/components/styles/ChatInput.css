@@ -1,0 +1,24 @@
+.chatinput {
+  background-color: #ededed;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.chatinput > .chatinput__left .MuiButtonBase-root:first-child {
+  margin-right: 16px;
+}
+.chatinput > .chatinput__form {
+  margin-left: 16px;
+  margin-right: 16px;
+  flex: 1;
+}
+.chatinput > .chatinput__form > input {
+  border-radius: 50px;
+  width: 100%;
+  border: none;
+  padding: 12px 16px;
+}
+.chatinput > .chatinput__form > input:focus {
+  outline: none;
+}

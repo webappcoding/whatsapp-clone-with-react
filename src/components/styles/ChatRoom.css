@@ -1,0 +1,26 @@
+.chatroom {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid #ebebeb;
+}
+.chatroom__addNew {
+  border-radius: 0px !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+.chatroom:hover {
+  background-color: #ededed;
+}
+.chatroom > .chatroom__left {
+  display: flex;
+}
+.chatroom > .chatroom__left > .chatroom__leftContent {
+  margin-left: 8px;
+}
+.chatroom > .chatroom__right span {
+  color: gray;
+  font-size: 12px;
+}
