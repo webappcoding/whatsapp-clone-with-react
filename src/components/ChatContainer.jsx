@@ -1,11 +1,34 @@
 import React from "react";
 import "./styles/ChatContainer.css";
 import Avatar from "@material-ui/core/Avatar";
-import { IconButton } from "@material-ui/core";
+import { Divider, IconButton, Menu, MenuItem } from "@material-ui/core";
 import { MoreVert, SearchOutlined } from "@material-ui/icons";
 import ChatInput from "./ChatInput";
 import Chat from "./Chat";
-const ChatContainer = () => {
+import { auth } from "../config/firebase";
+import { withRouter } from "react-router-dom";
+const ChatContainer = ({ history }) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    auth
+      .signOut()
+      .then(() => console.log("sign out successfully"))
+      .catch((e) => console.log(e.message));
+    localStorage.removeItem("isAuth");
+    handleClose();
+    history.push("/login");
+  };
+
   return (
     <div className="chatContainer">
       <div className="chatContainer__header">
@@ -17,9 +40,25 @@ const ChatContainer = () => {
           <IconButton>
             <SearchOutlined />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={handleClick}>
             <MoreVert />
           </IconButton>
+          <Menu
+            id="long-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              style: {
+                width: "20ch",
+              },
+            }}
+          >
+            <MenuItem onClick={handleClose}>Profile</MenuItem>
+            <Divider />
+            <MenuItem onClick={handleLogout}>Sign Out</MenuItem>
+          </Menu>
         </div>
       </div>
       <div className="chatContainer__body">
@@ -35,4 +74,4 @@ const ChatContainer = () => {
   );
 };
 
-export default ChatContainer;
+export default withRouter(ChatContainer);

@@ -1,24 +1,16 @@
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
+import { UserContext, useUserState } from "../context/context";
 
-const fakeAuth = {
-  isAuthenticated: false,
-  authenticate(cb) {
-    fakeAuth.isAuthenticated = true;
-    setTimeout(cb, 100); // fake async
-  },
-  signout(cb) {
-    fakeAuth.isAuthenticated = false;
-    setTimeout(cb, 100);
-  },
-};
-
+const isAuth = localStorage.getItem("isAuth");
 const PrivateRoute = ({ children, ...rest }) => {
+  const [{ user }] = useUserState(UserContext);
+
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        fakeAuth.isAuthenticated ? (
+        isAuth || user ? (
           children
         ) : (
           <Redirect

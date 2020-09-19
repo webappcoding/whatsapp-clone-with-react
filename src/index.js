@@ -4,12 +4,19 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { CssBaseline } from "@material-ui/core";
+import { UserContextProvider } from "./context/context";
+import reducer, { initialState } from "./context/reducer";
+import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <CssBaseline />
-    <App />
-  </React.StrictMode>,
+  <React.Fragment>
+    <UserContextProvider initialState={initialState} reducer={reducer}>
+      <BrowserRouter>
+        <CssBaseline />
+        <App />
+      </BrowserRouter>
+    </UserContextProvider>
+  </React.Fragment>,
   document.getElementById("root")
 );
 

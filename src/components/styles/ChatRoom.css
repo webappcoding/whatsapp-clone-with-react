@@ -20,6 +20,9 @@
 .chatroom > .chatroom__left > .chatroom__leftContent {
   margin-left: 8px;
 }
+.chatroom__leftContent h4 {
+  text-transform: capitalize;
+}
 .chatroom > .chatroom__right span {
   color: gray;
   font-size: 12px;

@@ -6,8 +6,11 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import db, { timestamp } from "../config/firebase";
+import { UserContext, useUserState } from "../context/context";
 
 const AddChatRoom = () => {
+  const [{ user }] = useUserState(UserContext);
   const [open, setOpen] = React.useState(false);
   const [input, setInput] = React.useState("");
 
@@ -20,7 +23,13 @@ const AddChatRoom = () => {
   };
   const handleSave = () => {
     setOpen(false);
-    console.log("save Clicked", input);
+    db.collection("rooms")
+      .add({
+        name: input,
+        users: [user.email],
+        timestamp: timestamp(),
+      })
+      .catch((error) => console.log(error.message));
 
     setInput("");
   };

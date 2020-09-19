@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, IconButton } from "@material-ui/core";
 import DonutLargeIcon from "@material-ui/icons/DonutLarge";
 import MessageIcon from "@material-ui/icons/Message";
@@ -8,7 +8,23 @@ import "./styles/SideBar.css";
 import { SearchOutlined } from "@material-ui/icons";
 import ChatRoom from "./ChatRoom";
 import AddChatRoom from "./AddChatRoom";
+import db from "../config/firebase";
+import { UserContext, useUserState } from "../context/context";
 const SideBar = () => {
+  const [rooms, setRooms] = useState([]);
+  const [{ user }] = useUserState(UserContext);
+
+  useEffect(() => {
+    if (user) {
+      db.collection("rooms")
+        .orderBy("timestamp", "asc")
+        .where("users", "in", [user.email])
+        .onSnapshot((snap) => {
+          setRooms(snap.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+        });
+    }
+  }, [user]);
+
   return (
     <div className="sidebar">
       <div className="sidebar__header">
@@ -35,8 +51,9 @@ const SideBar = () => {
       </div>
       <div className="sidebar__body">
         <AddChatRoom />
-        <ChatRoom />
-        <ChatRoom />
+        {rooms.map((room) => (
+          <ChatRoom key={room.id} data={room} />
+        ))}
       </div>
     </div>
   );
